@@ -7,6 +7,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type Game struct{}
@@ -51,9 +52,12 @@ func init() {
 		Players[i].PrintHand()
 	}
 
+	WhosFirst(Players)
+
 }
 
 func (g *Game) Update() error {
+
 	//メインループ
 	if EndFlag {
 		//終了処理
@@ -62,12 +66,48 @@ func (g *Game) Update() error {
 	switch Phase {
 	//アクションフェーズ
 	case ActionPhase:
-		if ebiten.IsKeyPressed(ebiten.KeyEnter) {
-			Players[WhosTurn-1].ActivateHand(Players[WhosTurn-1].HandIndex)
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && len(Players[WhosTurn].Hand) > 0 {
+			Players[WhosTurn].ActivateHand(Players[WhosTurn].HandIndex)
+			//Debug
+			fmt.Println(Players[WhosTurn].Name)
+			Players[WhosTurn].PrintHand()
+			Players[WhosTurn].HandIndex = 0
 		}
-		if ebiten.IsKeyPressed(ebiten.KeyArrowRight) {
-			if Players[WhosTurn-1].HandIndex < len(Players[WhosTurn-1].Hand) {
-				Players[WhosTurn-1].HandIndex++
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+
+			fmt.Println(Players[WhosTurn].Name)
+
+			if Players[WhosTurn].HandIndex < len(Players[WhosTurn].Hand)-1 {
+				Players[WhosTurn].HandIndex++
+
+			} else {
+				Players[WhosTurn].HandIndex = 0
+			}
+
+			for i, v := range Players[WhosTurn].Hand {
+				if i == Players[WhosTurn].HandIndex {
+					fmt.Println("->" + Players[WhosTurn].Hand[Players[WhosTurn].HandIndex].TellMyName())
+				} else {
+					fmt.Println("@:" + v.TellMyName())
+				}
+			}
+		} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+
+			fmt.Println(Players[WhosTurn].Name)
+
+			if Players[WhosTurn].HandIndex > 0 {
+				Players[WhosTurn].HandIndex--
+
+			} else {
+				Players[WhosTurn].HandIndex = len(Players[WhosTurn].Hand) - 1
+			}
+
+			for i, v := range Players[WhosTurn].Hand {
+				if i == Players[WhosTurn].HandIndex {
+					fmt.Println("->" + Players[WhosTurn].Hand[Players[WhosTurn].HandIndex].TellMyName())
+				} else {
+					fmt.Println("@:" + v.TellMyName())
+				}
 			}
 		}
 	case BuyPhase:

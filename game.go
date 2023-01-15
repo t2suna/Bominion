@@ -29,5 +29,5 @@ const (
 
 func WhosFirst(p []Player) {
 	rand.Seed(time.Now().UnixNano())
-	WhosTurn = rand.Intn(100)
+	WhosTurn = rand.Intn(len(p))
 }

@@ -60,7 +60,16 @@ func (p *Player) DiscardHand(index int) {
 
 // 手札からカードを発動する
 func (p *Player) ActivateHand(index int) {
+
 	p.MyDeck.ActivateZone = append(p.MyDeck.ActivateZone, p.Hand[index])
-	p.Hand = append(p.Hand[:index-1], p.Hand[index:]...)
-	p.Hand[index].Activate(p)
+	if index != 0 {
+		p.Hand = append(p.Hand[:index-1], p.Hand[index:]...)
+	} else if len(p.Hand) > 1 {
+		p.Hand = p.Hand[1:]
+	} else {
+		p.Hand = []Card{}
+
+	}
+	p.MyDeck.ActivateZone[len(p.MyDeck.ActivateZone)-1].Activate(p)
+
 }
