@@ -12,7 +12,19 @@ var WhosTurn int = 0
 var EndFlag bool = false
 var NumActionSupply = 5
 var Players []Player
+var Phase int
 
+const (
+	ActionPhase = iota
+	BuyPhase
+	CleanUpPhase
+)
+
+/*
+0 アクション(初期)
+1 購入
+2 クリーンアップ
+*/
 //乱数はサーバーもしくはホストユーザーのアプリケーションで行う必要がある
 
 func WhosFirst(p []Player) {

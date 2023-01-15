@@ -2,7 +2,7 @@ package main
 
 type Card interface {
 	TellMyName() string
-	Activate()
+	Activate(*Player)
 }
 
 type Jewel struct {
@@ -16,17 +16,17 @@ func (j Jewel) TellMyName() string {
 	return j.Name
 }
 
-func (j Jewel) Activate() {
+func (j Jewel) Activate(p *Player) {
 
 }
 
 type Action struct {
 	Name       string
 	Price      int
-	PlusDraw   int
-	PlusAction int
-	PlusBuy    int
-	PlusValue  int
+	DrawPlus   int
+	ActionPlus int
+	BuyPlus    int
+	ValuePlus  int
 	Special    int
 }
 
@@ -38,15 +38,21 @@ func (a Action) ShowText() {
 	//効果を見る
 }
 
-func (a Action) Activate() {
-	if a.PlusAction > 0 {
-
+func (a Action) Activate(p *Player) {
+	p.ActionPoint -= 1
+	if a.ActionPlus > 0 {
+		p.ActionPoint += a.ActionPlus
 	}
-	if a.PlusBuy > 0 {
-
+	if a.BuyPlus > 0 {
+		p.BuyPoint += a.BuyPlus
 	}
-	if a.PlusValue > 0 {
-
+	if a.ValuePlus > 0 {
+		p.ValuePoint += a.ValuePlus
+	}
+	if a.DrawPlus > 0 {
+		for i := 0; i < a.DrawPlus; i++ {
+			p.DrawHand()
+		}
 	}
 	SpecialActivate(a.Special)
 

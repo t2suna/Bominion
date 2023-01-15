@@ -11,6 +11,7 @@ type Player struct {
 	Name        string
 	Score       int
 	Hand        []Card
+	HandIndex   int
 	MyDeck      DeckStruct
 	ActionPoint int
 	BuyPoint    int

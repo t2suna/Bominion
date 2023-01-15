@@ -14,6 +14,7 @@ type Game struct{}
 // 開発用
 var diamond Jewel
 var farm Action
+var playernum int
 
 func init() {
 
@@ -27,14 +28,14 @@ func init() {
 	farm = Action{
 		Name:       "Farm",
 		Price:      2,
-		PlusDraw:   1,
-		PlusAction: 1,
-		PlusBuy:    1,
-		PlusValue:  1,
+		DrawPlus:   1,
+		ActionPlus: 1,
+		BuyPlus:    1,
+		ValuePlus:  1,
 	}
 
 	//本来はconfig inputする
-	var playernum int = 2
+	playernum = 2
 	for i := 0; i < playernum; i++ {
 		//Playerの情報入力を促す
 		Players = append(Players, Player{
@@ -54,10 +55,25 @@ func init() {
 
 func (g *Game) Update() error {
 	//メインループ
-	//
-	if !EndFlag {
-
+	if EndFlag {
+		//終了処理
 	}
+
+	switch Phase {
+	//アクションフェーズ
+	case ActionPhase:
+		if ebiten.IsKeyPressed(ebiten.KeyEnter) {
+			Players[WhosTurn-1].ActivateHand(Players[WhosTurn-1].HandIndex)
+		}
+		if ebiten.IsKeyPressed(ebiten.KeyArrowRight) {
+			if Players[WhosTurn-1].HandIndex < len(Players[WhosTurn-1].Hand) {
+				Players[WhosTurn-1].HandIndex++
+			}
+		}
+	case BuyPhase:
+	case CleanUpPhase:
+	}
+
 	return nil
 }
 
