@@ -25,7 +25,7 @@ func (p *Player) Init() {
 	for i := 0; i < 8; i++ {
 		p.MyDeck.Deck = append(p.MyDeck.Deck, diamond)
 	}
-	p.MyDeck.Shuffle()
+	p.MyDeck.Shuffle(p.Number)
 	for i := 0; i < 5; i++ {
 		p.DrawHand()
 	}
