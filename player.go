@@ -46,7 +46,7 @@ func (p *Player) CallMeCleanUpPhase() {
 	p.MyDeck.CleanUp()
 }
 
-// 	手札にカードをドローする
+// 	手札にカードを一枚ドローする
 func (p *Player) DrawHand() {
 	p.Hand = append(p.Hand, p.MyDeck.Deck[len(p.MyDeck.Deck)-1])
 	p.MyDeck.Deck = p.MyDeck.Deck[:len(p.MyDeck.Deck)-1]
@@ -62,5 +62,5 @@ func (p *Player) DiscardHand(index int) {
 func (p *Player) ActivateHand(index int) {
 	p.MyDeck.ActivateZone = append(p.MyDeck.ActivateZone, p.Hand[index])
 	p.Hand = append(p.Hand[:index-1], p.Hand[index:]...)
-	p.Hand[index].Activate()
+	p.Hand[index].Activate(p)
 }
