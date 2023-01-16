@@ -35,6 +35,12 @@ func init() {
 		ValuePlus:  1,
 	}
 
+	NumSupply = map[Card]int{}
+	Supply = append(Supply, diamond)
+	Supply = append(Supply, farm)
+	NumSupply[diamond] = NumJewelSupply
+	NumSupply[farm] = NumActionSupply
+
 	//本来はconfig inputする
 	playernum = 2
 	for i := 0; i < playernum; i++ {
@@ -66,27 +72,34 @@ func (g *Game) Update() error {
 	switch Phase {
 	//アクションフェーズ
 	case ActionPhase:
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			Phase = BuyPhase
+			Players[WhosTurn].Pointer = 0
+		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && len(Players[WhosTurn].Hand) > 0 {
-			Players[WhosTurn].ActivateHand(Players[WhosTurn].HandIndex)
+			Players[WhosTurn].ActivateHand(Players[WhosTurn].Pointer)
 			//Debug
 			fmt.Println(Players[WhosTurn].Name)
 			Players[WhosTurn].PrintHand()
-			Players[WhosTurn].HandIndex = 0
+			Players[WhosTurn].Pointer = 0
+			if Players[WhosTurn].ActionPoint == 0 {
+				Phase = BuyPhase
+			}
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
 
 			fmt.Println(Players[WhosTurn].Name)
 
-			if Players[WhosTurn].HandIndex < len(Players[WhosTurn].Hand)-1 {
-				Players[WhosTurn].HandIndex++
+			if Players[WhosTurn].Pointer < len(Players[WhosTurn].Hand)-1 {
+				Players[WhosTurn].Pointer++
 
 			} else {
-				Players[WhosTurn].HandIndex = 0
+				Players[WhosTurn].Pointer = 0
 			}
 
 			for i, v := range Players[WhosTurn].Hand {
-				if i == Players[WhosTurn].HandIndex {
-					fmt.Println("->" + Players[WhosTurn].Hand[Players[WhosTurn].HandIndex].TellMyName())
+				if i == Players[WhosTurn].Pointer {
+					fmt.Println("->" + v.TellMyName())
 				} else {
 					fmt.Println("@:" + v.TellMyName())
 				}
@@ -95,23 +108,70 @@ func (g *Game) Update() error {
 
 			fmt.Println(Players[WhosTurn].Name)
 
-			if Players[WhosTurn].HandIndex > 0 {
-				Players[WhosTurn].HandIndex--
+			if Players[WhosTurn].Pointer > 0 {
+				Players[WhosTurn].Pointer--
 
 			} else {
-				Players[WhosTurn].HandIndex = len(Players[WhosTurn].Hand) - 1
+				Players[WhosTurn].Pointer = len(Players[WhosTurn].Hand) - 1
 			}
 
 			for i, v := range Players[WhosTurn].Hand {
-				if i == Players[WhosTurn].HandIndex {
-					fmt.Println("->" + Players[WhosTurn].Hand[Players[WhosTurn].HandIndex].TellMyName())
+				if i == Players[WhosTurn].Pointer {
+					fmt.Println("->" + v.TellMyName())
 				} else {
 					fmt.Println("@:" + v.TellMyName())
 				}
 			}
 		}
 	case BuyPhase:
+
+		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+			Phase = CleanUpPhase
+		}
+
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && len(Players[WhosTurn].Hand) > 0 {
+			Players[WhosTurn].BuyCard(Supply[Players[WhosTurn].Pointer])
+			Players[WhosTurn].Pointer = 0
+			if Players[WhosTurn].BuyPoint == 0 {
+				Phase = BuyPhase
+			}
+		}
+		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
+			fmt.Println("Supply")
+
+			if Players[WhosTurn].Pointer < len(Supply)-1 {
+				Players[WhosTurn].Pointer++
+
+			} else {
+				Players[WhosTurn].Pointer = 0
+			}
+			for i, v := range Supply {
+				if i == Players[WhosTurn].Pointer {
+					fmt.Println("->" + v.TellMyName())
+				} else {
+					fmt.Println("@:" + v.TellMyName())
+				}
+			}
+		} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
+			fmt.Println("Supply")
+
+			if Players[WhosTurn].Pointer > 0 {
+				Players[WhosTurn].Pointer--
+
+			} else {
+				Players[WhosTurn].Pointer = len(Supply) - 1
+			}
+
+			for i, v := range Supply {
+				if i == Players[WhosTurn].Pointer {
+					fmt.Println("->" + v.TellMyName())
+				} else {
+					fmt.Println("@:" + v.TellMyName())
+				}
+			}
+		}
 	case CleanUpPhase:
+		Players[WhosTurn].CallMeCleanUpPhase()
 	}
 
 	return nil

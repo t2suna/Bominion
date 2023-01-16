@@ -2,6 +2,7 @@ package main
 
 type Card interface {
 	TellMyName() string
+	TellMyPrice() int
 	Activate(*Player)
 }
 
@@ -14,6 +15,10 @@ type Jewel struct {
 
 func (j Jewel) TellMyName() string {
 	return j.Name
+}
+
+func (j Jewel) TellMyPrice() int {
+	return j.Price
 }
 
 func (j Jewel) Activate(p *Player) {
@@ -34,8 +39,11 @@ func (a Action) TellMyName() string {
 	return a.Name
 }
 
+func (a Action) TellMyPrice() int {
+	return a.Price
+}
+
 func (a Action) ShowText() {
-	//効果を見る
 }
 
 func (a Action) Activate(p *Player) {

@@ -11,7 +11,7 @@ type Player struct {
 	Name        string
 	Score       int
 	Hand        []Card
-	HandIndex   int
+	Pointer     int
 	MyDeck      DeckStruct
 	ActionPoint int
 	BuyPoint    int
@@ -43,11 +43,27 @@ func (p *Player) CallMeCleanUpPhase() {
 	p.ActionPoint = APINIT
 	p.BuyPoint = BPINIT
 	p.ValuePoint = VPINIT
-	p.MyDeck.CleanUp()
+	p.MyDeck.CleanActivateZone()
+	for i := 0; i < 5; i++ {
+		p.DrawHand()
+	}
+}
+
+// 	カードを購入する
+func (p *Player) BuyCard(card Card) {
+	p.BuyPoint--
+	if card.TellMyPrice() <= p.ValuePoint {
+		p.ValuePoint -= card.TellMyPrice()
+		p.MyDeck.DiscardZone = append(p.MyDeck.DiscardZone, card)
+	}
 }
 
 // 	手札にカードを一枚ドローする
 func (p *Player) DrawHand() {
+	if len(p.MyDeck.Deck) == 0 {
+		p.MyDeck.CleanDiscardZone()
+		p.MyDeck.Shuffle(0)
+	}
 	p.Hand = append(p.Hand, p.MyDeck.Deck[len(p.MyDeck.Deck)-1])
 	p.MyDeck.Deck = p.MyDeck.Deck[:len(p.MyDeck.Deck)-1]
 }
