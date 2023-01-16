@@ -23,6 +23,6 @@ func (d *DeckStruct) CleanDiscardZone() {
 }
 
 func (d *DeckStruct) CleanActivateZone() {
-	d.Deck = append(d.Deck, d.ActivateZone...)
+	d.Deck = append(d.DiscardZone, d.ActivateZone...)
 	d.ActivateZone = []Card{}
 }

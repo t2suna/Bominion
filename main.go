@@ -101,7 +101,7 @@ func (g *Game) Update() error {
 				if i == Players[WhosTurn].Pointer {
 					fmt.Println("->" + v.TellMyName())
 				} else {
-					fmt.Println("@:" + v.TellMyName())
+					fmt.Println("@" + v.TellMyName())
 				}
 			}
 		} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
@@ -119,7 +119,7 @@ func (g *Game) Update() error {
 				if i == Players[WhosTurn].Pointer {
 					fmt.Println("->" + v.TellMyName())
 				} else {
-					fmt.Println("@:" + v.TellMyName())
+					fmt.Println("@" + v.TellMyName())
 				}
 			}
 		}
@@ -133,7 +133,7 @@ func (g *Game) Update() error {
 			Players[WhosTurn].BuyCard(Supply[Players[WhosTurn].Pointer])
 			Players[WhosTurn].Pointer = 0
 			if Players[WhosTurn].BuyPoint == 0 {
-				Phase = BuyPhase
+				Phase = CleanUpPhase
 			}
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
@@ -149,7 +149,7 @@ func (g *Game) Update() error {
 				if i == Players[WhosTurn].Pointer {
 					fmt.Println("->" + v.TellMyName())
 				} else {
-					fmt.Println("@:" + v.TellMyName())
+					fmt.Println("@" + v.TellMyName())
 				}
 			}
 		} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) {
@@ -166,7 +166,7 @@ func (g *Game) Update() error {
 				if i == Players[WhosTurn].Pointer {
 					fmt.Println("->" + v.TellMyName())
 				} else {
-					fmt.Println("@:" + v.TellMyName())
+					fmt.Println("@" + v.TellMyName())
 				}
 			}
 		}

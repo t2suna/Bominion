@@ -34,12 +34,13 @@ func (p *Player) Init() {
 
 func (p *Player) PrintHand() {
 	for _, v := range p.Hand {
-		fmt.Println("@:" + v.TellMyName())
+		fmt.Println("@" + v.TellMyName())
 	}
 }
 
 //	クリーンアップ
 func (p *Player) CallMeCleanUpPhase() {
+	p.DiscardAllHand()
 	p.ActionPoint = APINIT
 	p.BuyPoint = BPINIT
 	p.ValuePoint = VPINIT
@@ -55,6 +56,7 @@ func (p *Player) BuyCard(card Card) {
 	if card.TellMyPrice() <= p.ValuePoint {
 		p.ValuePoint -= card.TellMyPrice()
 		p.MyDeck.DiscardZone = append(p.MyDeck.DiscardZone, card)
+		fmt.Println("You bought " + card.TellMyName())
 	}
 }
 
@@ -66,6 +68,14 @@ func (p *Player) DrawHand() {
 	}
 	p.Hand = append(p.Hand, p.MyDeck.Deck[len(p.MyDeck.Deck)-1])
 	p.MyDeck.Deck = p.MyDeck.Deck[:len(p.MyDeck.Deck)-1]
+}
+
+// 手札からカードをすべて捨てる
+func (p *Player) DiscardAllHand() {
+	for i, v := range p.Hand {
+		p.MyDeck.DiscardZone = append(p.MyDeck.DiscardZone, v)
+		p.Hand = p.Hand[:i]
+	}
 }
 
 // 手札からカードを捨てる
