@@ -32,10 +32,16 @@ func (p *Player) Init() {
 	}
 }
 
-func (p *Player) PrintHand() {
-	for _, v := range p.Hand {
-		fmt.Println("@" + v.TellMyName())
+func (p *Player) PrintHand(pointer int) {
+	fmt.Println(p.Name)
+	for i, v := range p.Hand {
+		if i == pointer {
+			fmt.Println("->" + v.TellMyName())
+		} else {
+			fmt.Println("@" + v.TellMyName())
+		}
 	}
+	fmt.Println("__________")
 }
 
 //	クリーンアップ
@@ -72,10 +78,8 @@ func (p *Player) DrawHand() {
 
 // 手札からカードをすべて捨てる
 func (p *Player) DiscardAllHand() {
-	for i, v := range p.Hand {
-		p.MyDeck.DiscardZone = append(p.MyDeck.DiscardZone, v)
-		p.Hand = p.Hand[:i]
-	}
+	p.MyDeck.DiscardZone = append(p.MyDeck.DiscardZone, p.Hand...)
+	p.Hand = []Card{}
 }
 
 // 手札からカードを捨てる
