@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	_ "image/png"
 	"log"
 	"strconv"
 
@@ -16,8 +17,14 @@ type Game struct{}
 var diamond Jewel
 var farm Action
 var playernum int
+var img *ebiten.Image
 
 func init() {
+	var err error
+	img, _, err = ebitenutil.NewImageFromFile("card.png")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// 開発用
 	diamond = Jewel{
@@ -185,8 +192,21 @@ func (g *Game) Update() error {
 	return nil
 }
 
+var x, y float64
+var countlogic int
+
 func (g *Game) Draw(screen *ebiten.Image) {
-	ebitenutil.DebugPrint(screen, "Hello, World!")
+	y = 1000
+	op := &ebiten.DrawImageOptions{}
+	if ebiten.IsKeyPressed(ebiten.KeyE) && countlogic == 10 {
+		x += 500
+		countlogic = 0
+	} else if ebiten.IsKeyPressed(ebiten.KeyE) {
+		countlogic++
+	}
+	op.GeoM.Translate(x, y)
+	op.GeoM.Scale(0.1, 0.1)
+	screen.DrawImage(img, op)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
