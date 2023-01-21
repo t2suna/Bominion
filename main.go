@@ -97,17 +97,18 @@ func (g *Game) Update() error {
 			Players[WhosTurn].PrintHand(0)
 			Players[WhosTurn].Pointer = 0
 
-			fmt.Println("Supply")
-			for i, v := range Supply {
-				if i == Players[WhosTurn].Pointer {
-					fmt.Println("->" + v.TellMyName())
-				} else {
-					fmt.Println("@" + v.TellMyName())
-				}
-			}
-			fmt.Println("__________")
 			if Players[WhosTurn].ActionPoint == 0 {
 				Phase = BuyPhase
+
+				fmt.Println("Supply")
+				for i, v := range Supply {
+					if i == Players[WhosTurn].Pointer {
+						fmt.Println("->" + v.TellMyName())
+					} else {
+						fmt.Println("@" + v.TellMyName())
+					}
+				}
+				fmt.Println("__________")
 			}
 		} else if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
 
