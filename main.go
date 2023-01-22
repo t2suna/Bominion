@@ -18,10 +18,17 @@ var diamond Jewel
 var farm Action
 var playernum int
 var img *ebiten.Image
+var img2 *ebiten.Image
 
 func init() {
+	ebiten.SetFPSMode(0)
+
 	var err error
 	img, _, err = ebitenutil.NewImageFromFile("card.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+	img2, _, err = ebitenutil.NewImageFromFile("card2.png")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,7 +76,8 @@ func init() {
 }
 
 func (g *Game) Update() error {
-
+	fmt.Println(ebiten.ActualFPS())
+	fmt.Println(ebiten.ActualTPS())
 	//メインループ
 	if EndFlag {
 		//終了処理
@@ -196,26 +204,36 @@ var x, y float64
 var countlogic int
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	y = 1000
+	y = 500
 	op := &ebiten.DrawImageOptions{}
-	if ebiten.IsKeyPressed(ebiten.KeyE) && countlogic == 10 {
-		x += 500
+	if ebiten.IsKeyPressed(ebiten.KeyE) && countlogic > 100 && x < 750*4 {
+		x += 750
 		countlogic = 0
 	} else if ebiten.IsKeyPressed(ebiten.KeyE) {
 		countlogic++
 	}
+
+	if ebiten.IsKeyPressed(ebiten.KeyR) && countlogic > 100 && x > 0 {
+		x -= 750
+		countlogic = 0
+	} else if ebiten.IsKeyPressed(ebiten.KeyR) {
+		countlogic++
+	}
+
 	op.GeoM.Translate(x, y)
-	op.GeoM.Scale(0.1, 0.1)
-	screen.DrawImage(img, op)
+	op.GeoM.Scale(0.5, 0.5)
+	//screen.DrawImage(img, op)
+
+	screen.DrawImage(img2, op)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return 320, 240
+	return 2000, 1200
 }
 
 func main() {
 
-	ebiten.SetWindowSize(640, 480)
+	ebiten.SetWindowSize(1000, 600)
 	ebiten.SetWindowTitle("Hello, World!")
 	if err := ebiten.RunGame(&Game{}); err != nil {
 		log.Fatal(err)

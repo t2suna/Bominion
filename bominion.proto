@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package bominion;
+
+option go_package = "pb/";
+
+import "google/protobuf/timestamp.proto";
+
+service BominionService{
+    // 購入する
+    rpc Buy (BuyRequest) returns (BuyResponse) {}
+}
