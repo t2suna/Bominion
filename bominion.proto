@@ -8,5 +8,31 @@ import "google/protobuf/timestamp.proto";
 
 service BominionService{
     // 購入する
-    rpc Buy (BuyRequest) returns (BuyResponse) {}
+    rpc Buy (NumberRequest) returns (DoneResponse) {}
+    // 捨てる
+    rpc Discard (NumberRequest) returns (DoneResponse) {}
+    // 発動する
+    rpc Activate (NumberRequest) returns (DoneResponse) {}
 }
+
+message NumberRequest {
+    int num = 1;
+    int who =2;
+}
+
+message DoneResponse {
+    bool done = 1;
+}
+
+
+/*
+//渡したい情報
+    何番目のカードを指定するか
+
+
+//受け取りたい情報
+    その結果、場にどんな変化が起きたか
+        サプライ/捨て札/デッキ
+
+*/
+
