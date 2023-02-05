@@ -1,3 +1,2 @@
-This game will be made by Ebitengine.
-
-Dominion like card game.
+# 概要
+Ebitengineを使用した、ドミニオンライクなカードゲーム
