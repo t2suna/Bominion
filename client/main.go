@@ -16,6 +16,8 @@ var playernum int
 var img *ebiten.Image
 var img2 *ebiten.Image
 var selectImg *ebiten.Image
+var imgBook []*ebiten.Image
+var hand []int
 
 func init() {
 	var err error
@@ -27,10 +29,14 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	imgBook = append(imgBook, img)
+	imgBook = append(imgBook, img2)
 	selectImg, _, err = ebitenutil.NewImageFromFile("light.png")
 	if err != nil {
 		log.Fatal(err)
 	}
+	// テスト用手札
+	hand = append(hand, 0, 1, 1, 1, 0)
 
 }
 
@@ -66,9 +72,8 @@ func (g *Game) MoreDraw(x, y float64, img *ebiten.Image, screen *ebiten.Image) {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
-	for i := 0; i < 5; i++ {
-		g.MoreDraw(750*float64(i), 500, img2, screen)
-
+	for i, j := range hand {
+		g.MoreDraw(750*float64(i), 500, imgBook[j], screen)
 	}
 
 	y = 500
