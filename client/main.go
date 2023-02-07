@@ -60,7 +60,13 @@ func (g *Game) Update() error {
 }
 
 var x, y float64
-var countlogic int
+
+type countLogic struct {
+	l int
+	r int
+}
+
+var cl countLogic
 
 func (g *Game) MoreDraw(x, y float64, img *ebiten.Image, screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
@@ -70,6 +76,8 @@ func (g *Game) MoreDraw(x, y float64, img *ebiten.Image, screen *ebiten.Image) {
 	screen.DrawImage(img, op)
 }
 
+const countLimit int = 70
+
 func (g *Game) Draw(screen *ebiten.Image) {
 
 	for i, j := range hand {
@@ -78,16 +86,16 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	y = 500
 	op := &ebiten.DrawImageOptions{}
-	if ebiten.IsKeyPressed(ebiten.KeyE) && countlogic > 100 && x < 750*4 {
+	if ebiten.IsKeyPressed(ebiten.KeyE) && cl.l > countLimit && x < 750*4 {
 		x += 750
-		countlogic = 0
+		cl.l = 0
 	} else if ebiten.IsKeyPressed(ebiten.KeyE) {
-		countlogic++
-	} else if ebiten.IsKeyPressed(ebiten.KeyR) && countlogic > 100 && x > 0 {
+		cl.l++
+	} else if ebiten.IsKeyPressed(ebiten.KeyR) && cl.r > countLimit && x > 0 {
 		x -= 750
-		countlogic = 0
+		cl.r = 0
 	} else if ebiten.IsKeyPressed(ebiten.KeyR) {
-		countlogic++
+		cl.r++
 	}
 
 	op.GeoM.Translate(x, y)
