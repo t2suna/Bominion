@@ -6,6 +6,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type Game struct{}
@@ -20,6 +21,8 @@ var imgBook []*ebiten.Image
 var hand []int
 
 func init() {
+	ebiten.SetFPSMode(ebiten.FPSModeVsyncOffMaximum)
+	ebiten.SetTPS(ebiten.SyncWithFPS)
 	var err error
 	img, _, err = ebitenutil.NewImageFromFile("card.png")
 	if err != nil {
@@ -68,20 +71,22 @@ type countLogic struct {
 
 var cl countLogic
 
-func (g *Game) MoreDraw(x, y float64, img *ebiten.Image, screen *ebiten.Image) {
+func (g *Game) MoreDraw(x, y float64, s float64, img *ebiten.Image, screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x, y)
-	op.GeoM.Scale(0.5, 0.5)
+	op.GeoM.Scale(s, s)
 
 	screen.DrawImage(img, op)
 }
 
-const countLimit int = 70
+const countLimit int = 150
+
+var onOff bool
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
 	for i, j := range hand {
-		g.MoreDraw(750*float64(i), 500, imgBook[j], screen)
+		g.MoreDraw(750*float64(i), 500, 0.5, imgBook[j], screen)
 	}
 
 	y = 500
@@ -101,6 +106,18 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	op.GeoM.Translate(x, y)
 	op.GeoM.Scale(0.5, 0.5)
 	screen.DrawImage(selectImg, op)
+
+	if inpututil.IsKeyJustReleased(ebiten.KeyP) {
+		if onOff {
+			onOff = false
+		} else {
+			onOff = true
+		}
+	}
+
+	if onOff {
+		g.MoreDraw(750, 0, 1, imgBook[0], screen)
+	}
 
 }
 
