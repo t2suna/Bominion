@@ -54,19 +54,22 @@ func (g *Game) Update() error {
 }
 
 var x, y float64
-var x2, y2 float64
 var countlogic int
+
+func (g *Game) MoreDraw(x, y float64, img *ebiten.Image, screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(x, y)
+	op.GeoM.Scale(0.5, 0.5)
+
+	screen.DrawImage(img, op)
+}
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
-	x2 = 0
-	y2 = 500
+	for i := 0; i < 5; i++ {
+		g.MoreDraw(750*float64(i), 500, img2, screen)
 
-	op2 := &ebiten.DrawImageOptions{}
-	op2.GeoM.Translate(x2, y2)
-	op2.GeoM.Scale(0.5, 0.5)
-
-	screen.DrawImage(img2, op2)
+	}
 
 	y = 500
 	op := &ebiten.DrawImageOptions{}
@@ -75,9 +78,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		countlogic = 0
 	} else if ebiten.IsKeyPressed(ebiten.KeyE) {
 		countlogic++
-	}
-
-	if ebiten.IsKeyPressed(ebiten.KeyR) && countlogic > 100 && x > 0 {
+	} else if ebiten.IsKeyPressed(ebiten.KeyR) && countlogic > 100 && x > 0 {
 		x -= 750
 		countlogic = 0
 	} else if ebiten.IsKeyPressed(ebiten.KeyR) {
