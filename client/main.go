@@ -17,38 +17,32 @@ var playernum int
 var img *ebiten.Image
 var img2 *ebiten.Image
 var selectImg *ebiten.Image
-var imgBook []*ebiten.Image
+var imgBook []*ebiten.Image //カードの画像データが入る　番号はサーバーとクライアントで統一
 var hand []int
 
 func init() {
 	ebiten.SetFPSMode(ebiten.FPSModeVsyncOffMaximum)
 	ebiten.SetTPS(ebiten.SyncWithFPS)
 	var err error
-	img, _, err = ebitenutil.NewImageFromFile("card.png")
+	img, _, err = ebitenutil.NewImageFromFile("images/card.png")
 	if err != nil {
 		log.Fatal(err)
 	}
-	img2, _, err = ebitenutil.NewImageFromFile("card2.png")
+	img2, _, err = ebitenutil.NewImageFromFile("images/card2.png")
 	if err != nil {
 		log.Fatal(err)
 	}
 	imgBook = append(imgBook, img)
 	imgBook = append(imgBook, img2)
-	selectImg, _, err = ebitenutil.NewImageFromFile("light.png")
+	selectImg, _, err = ebitenutil.NewImageFromFile("images/light.png")
 	if err != nil {
 		log.Fatal(err)
 	}
 	// テスト用手札
 	hand = append(hand, 0, 1, 1, 1, 0)
-
 }
 
 func (g *Game) Update() error {
-	//メインループ
-	if EndFlag {
-		//終了処理
-	} else {
-	}
 
 	switch Phase {
 	//アクションフェーズ
@@ -59,6 +53,7 @@ func (g *Game) Update() error {
 	case CleanUpPhase:
 
 	}
+
 	return nil
 }
 

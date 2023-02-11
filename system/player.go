@@ -1,4 +1,4 @@
-package main
+package system
 
 import "fmt"
 
@@ -21,10 +21,10 @@ type Player struct {
 //	初期化
 func (p *Player) Init() {
 	for i := 0; i < 2; i++ {
-		p.MyDeck.Deck = append(p.MyDeck.Deck, farm)
+		p.MyDeck.Deck = append(p.MyDeck.Deck, Farm)
 	}
 	for i := 0; i < 8; i++ {
-		p.MyDeck.Deck = append(p.MyDeck.Deck, diamond)
+		p.MyDeck.Deck = append(p.MyDeck.Deck, Diamond)
 	}
 	p.MyDeck.Shuffle(p.Number)
 	for i := 0; i < 5; i++ {

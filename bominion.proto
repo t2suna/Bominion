@@ -4,31 +4,55 @@ package bominion;
 
 option go_package = "pb/";
 
-import "google/protobuf/timestamp.proto";
+//import "google/protobuf/timestamp.proto";
 
-service BominionService{
+service Bominion{
     // 購入する
-    rpc Buy (NumberRequest) returns (DoneResponse) {}
+    rpc Buy (BuyRequest) returns (BuyResponse) {}
     // 捨てる
-    rpc Discard (NumberRequest) returns (DoneResponse) {}
+    rpc Discard (DiscardRequest) returns (DiscardResponse) {}
     // 発動する
-    rpc Activate (NumberRequest) returns (DoneResponse) {}
+    rpc Activate (ActivateRequest) returns (ActivateResponse) {}
+    // 発動する
+    rpc GetPhase (GetPhaseRequest) returns (GetPhaseResponse) {}
 }
 
-message NumberRequest {
-    int num = 1;
-    int who =2;
+message BuyRequest {
+    int64 num = 1;
+    int64 who =2;
 }
 
-message DoneResponse {
+message DiscardRequest {
+    int64 num = 1;
+    int64 who =2;
+}
+message ActivateRequest {
+    int64 num = 1;
+    int64 who =2;
+}
+
+message GetPhaseRequest {
+    int64 who =1;
+}
+
+message BuyResponse {
     bool done = 1;
 }
 
+message DiscardResponse {
+    bool done = 1;
+}
+message ActivateResponse {
+    bool done = 1;
+}
+
+message GetPhaseResponse {
+    int64 phase = 1;
+}
 
 /*
 //渡したい情報
     何番目のカードを指定するか
-
 
 //受け取りたい情報
     その結果、場にどんな変化が起きたか

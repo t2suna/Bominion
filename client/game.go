@@ -15,6 +15,7 @@ var Phase int
 //var NumSupply map[Card]int
 
 const (
+	WaitPhase   = -1
 	ActionPhase = iota
 	BuyPhase
 	CleanUpPhase

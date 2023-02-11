@@ -1,4 +1,4 @@
-package main
+package system
 
 type Card interface {
 	TellMyName() string

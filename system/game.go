@@ -1,4 +1,4 @@
-package main
+package system
 
 //後でメインに書くソース
 
@@ -18,6 +18,7 @@ var Supply []Card
 var NumSupply map[Card]int
 
 const (
+	WaitPhase   = -1
 	ActionPhase = iota
 	BuyPhase
 	CleanUpPhase
