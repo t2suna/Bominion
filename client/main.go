@@ -19,6 +19,7 @@ var img2 *ebiten.Image
 var selectImg *ebiten.Image
 var imgBook []*ebiten.Image //カードの画像データが入る　番号はサーバーとクライアントで統一
 var hand []int
+var supply []int
 
 func init() {
 	ebiten.SetFPSMode(ebiten.FPSModeVsyncOffMaximum)
@@ -40,6 +41,8 @@ func init() {
 	}
 	// テスト用手札
 	hand = append(hand, 0, 1, 1, 1, 0)
+	supply = append(supply, 0, 1)
+
 }
 
 func (g *Game) Update() error {
@@ -51,6 +54,8 @@ func (g *Game) Update() error {
 	case BuyPhase:
 
 	case CleanUpPhase:
+
+	default:
 
 	}
 
@@ -80,11 +85,15 @@ var onOff bool
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
-	for i, j := range hand {
-		g.MoreDraw(750*float64(i), 500, 0.5, imgBook[j], screen)
+	for i, j := range supply {
+		g.MoreDraw(750, 500+250*float64(i), 0.2, imgBook[j], screen)
 	}
 
-	y = 500
+	for i, j := range hand {
+		g.MoreDraw(750*float64(i), 1000, 0.5, imgBook[j], screen)
+	}
+
+	y = 1000
 	op := &ebiten.DrawImageOptions{}
 	if ebiten.IsKeyPressed(ebiten.KeyE) && cl.l > countLimit && x < 750*4 {
 		x += 750
