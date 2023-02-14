@@ -5,6 +5,7 @@ import (
 
 	api "github.com/bominion/pb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 /*
@@ -28,10 +29,13 @@ type CommitLog interface {
 */
 func NewGRPCServer() (*grpc.Server, error) {
 	gsrv := grpc.NewServer()
+	//TODO:テスト用 リフレクションの設定
+	reflection.Register(gsrv)
 	srv, err := newgrpcServer()
 	if err != nil {
 		return nil, err
 	}
+	//ここでサービス登録を行っている。
 	api.RegisterBominionServer(gsrv, srv)
 	return gsrv, nil
 }
@@ -44,6 +48,7 @@ func newgrpcServer() (srv *grpcServer, err error) {
 func (s *grpcServer) Buy(ctx context.Context, req *api.BuyRequest) (
 	*api.BuyResponse, error) {
 
+	//sys.Players[sys.WhosTurn].BuyCard(sys.Supply[sys.Players[sys.WhosTurn].Pointer])
 	return &api.BuyResponse{Done: true}, nil
 }
 
